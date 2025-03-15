@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 
 interface LoginProps {
@@ -8,6 +8,8 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ setLogin }) => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload
@@ -24,7 +26,13 @@ const Login: React.FC<LoginProps> = ({ setLogin }) => {
       const response = await axios.post('http://127.0.0.1:5000//login', {
         username,
         password,
+
       });
+
+        setToken(response.data.token)
+        if (token)
+        localStorage.setItem('token', token)
+        console.log(response.data.token)
 
       console.log('Login successful:', response.data);
       alert('Login successful!');
@@ -40,7 +48,7 @@ const Login: React.FC<LoginProps> = ({ setLogin }) => {
         <div className="w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Sign in to your account
+              Log in to your account
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
               <div>
@@ -72,7 +80,7 @@ const Login: React.FC<LoginProps> = ({ setLogin }) => {
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Sign in
+                Log in
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{' '}

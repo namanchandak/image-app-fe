@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 
 interface SignupProps {
@@ -9,6 +9,9 @@ const Signup: React.FC<SignupProps> = ({ setLogin }) => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  
+
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,10 +30,18 @@ const Signup: React.FC<SignupProps> = ({ setLogin }) => {
         username,
         name,
         password,
+
       });
+
+      setToken(response.data.token)
+      if (token)
+      localStorage.setItem('token', token)
+      console.log(response.data.toke)
+
 
       console.log('Signup successful:', response.data);
       alert('Account created successfully!');
+
     } catch (error) {
       console.error('Signup failed:', error);
       alert('Signup failed. Please try again.');
