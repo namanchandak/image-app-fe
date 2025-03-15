@@ -23,7 +23,7 @@ const Signup: React.FC<SignupProps> = ({ setLogin }) => {
     }
 
     try {
-      const response = await axios.post('https://your-api-endpoint.com/signup', {
+      const response = await axios.post('http://127.0.0.1:5000//signup', {
         username,
         name,
         password,
