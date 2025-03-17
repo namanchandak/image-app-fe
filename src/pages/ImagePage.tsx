@@ -20,11 +20,18 @@ const ImagePage: React.FC = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    console.log("Uploading file:", selectedFile);
+    const token = localStorage.getItem("token"); // Get token from local storage
+    if (!token) {
+      alert("User not authenticated");
+      return;
+    }
 
     try {
       const response = await axios.post("http://127.0.0.1:5000/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token, // Send token in header
+        },
       });
 
       console.log("Upload response:", response.data);
@@ -37,10 +44,22 @@ const ImagePage: React.FC = () => {
   };
 
   const fetchImages = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("User not authenticated");
+      return;
+    }
+
     try {
-      const response = await axios.get("http://127.0.0.1:5000/images");
+      const response = await axios.get("http://127.0.0.1:5000/images", {
+        headers: {
+          Authorization: token, // Send token in header
+        },
+      });
+
       if (response.data.images) {
-        setImages(response.data.images);
+        const imageUrls = response.data.images.map((img: { image_url: string }) => img.image_url);
+        setImages(imageUrls);
       }
     } catch (error) {
       console.error("Failed to fetch images:", error);
@@ -60,8 +79,15 @@ const ImagePage: React.FC = () => {
         Upload
       </button>
 
-      <div className="grid grid-cols-3 gap-4">{images.map((imageUrl, index) => <img key={index} src={imageUrl} className="w-40 h-40 rounded" />)}</div>
-    </div>
+      <div className="grid grid-cols-3 gap-4">
+        {images.length > 0 ? (
+          images.map((imageUrl, index) => (
+            <img key={index} src={imageUrl} alt="Uploaded image" className="w-40 h-40 rounded object-cover" />
+          ))
+        ) : (
+          <p className="text-gray-400">No images uploaded yet.</p>
+        )}
+      </div>    </div>
   );
 };
 
