@@ -29,9 +29,9 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
   };
 
   return (
-    <div className="w-full max-w-md p-8 bg-gray-800 text-white rounded-lg shadow-lg">
+    <div className="w-full max-w-sm p-6 bg-gray-800 text-white rounded-lg shadow-lg flex flex-col items-center">
       <h2 className="text-2xl font-bold text-blue-400 mb-6">Login</h2>
-      <form onSubmit={handleLogin} className="space-y-4">
+      <form onSubmit={handleLogin} className="space-y-4 w-full">
         <input
           type="text"
           placeholder="Username"
@@ -50,7 +50,7 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
           Login
         </button>
       </form>
-      <p className="mt-4 text-gray-400">
+      <p className="mt-4 text-gray-400 text-center">
         Don't have an account?{" "}
         <button onClick={() => navigate("/signup")} className="text-blue-400 hover:underline">
           Sign up

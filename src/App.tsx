@@ -37,20 +37,22 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white">
-      <h1 className="text-4xl font-bold mb-6 text-center text-blue-400">Welcome to Image App</h1>
+    <div className="flex items-center justify-center h-screen w-screen bg-gray-900 text-white">
+      <div className="p-8 bg-gray-800 text-white rounded-lg shadow-lg flex flex-col items-center">
+        <h1 className="text-3xl font-bold mb-6 text-center text-blue-400">Welcome to Image App</h1>
 
-      {isAuthenticated && (
-        <button onClick={handleLogout} className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg mb-4">
-          Logout
-        </button>
-      )}
+        {isAuthenticated && (
+          <button onClick={handleLogout} className="py-2 px-4 bg-red-500 hover:bg-red-600 text-white rounded-lg mb-4">
+            Logout
+          </button>
+        )}
 
-      <Routes>
-        <Route path="/" element={isAuthenticated ? <Navigate to="/image" /> : <Login setAuth={setIsAuthenticated} />} />
-        <Route path="/signup" element={<Signup setAuth={setIsAuthenticated} />} />
-        <Route path="/image" element={isAuthenticated ? <ImagePage /> : <Navigate to="/" />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={isAuthenticated ? <Navigate to="/image" /> : <Login setAuth={setIsAuthenticated} />} />
+          <Route path="/signup" element={<Signup setAuth={setIsAuthenticated} />} />
+          <Route path="/image" element={isAuthenticated ? <ImagePage /> : <Navigate to="/" />} />
+        </Routes>
+      </div>
     </div>
   );
 };
