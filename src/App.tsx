@@ -37,8 +37,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen w-screen bg-gray-900 text-white">
-      <div className="p-8 bg-gray-800 text-white rounded-lg shadow-lg flex flex-col items-center">
+    <div className="flex items-center justify-center h-screen w-screen bg-gray-900 text-white overflow-y-auto">
+      <div className="h-full w-full p-8 bg-gray-800 text-white rounded-lg shadow-lg flex flex-col justify-center items-center overflow-y-auto">
         <h1 className="text-3xl font-bold mb-6 text-center text-blue-400">Welcome to Image App</h1>
 
         {isAuthenticated && (
