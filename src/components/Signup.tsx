@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -7,15 +7,19 @@ interface SignupProps {
 }
 
 const Signup: React.FC<SignupProps> = ({ setAuth }) => {
-  const [username, setUsername] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  const username = useRef<HTMLInputElement>(null);
+  const password = useRef<HTMLInputElement>(null);
+  const name = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:5000/signup", { username, name, password });
+      const response = await axios.post("http://127.0.0.1:5000/signup", {
+        username: username.current?.value,
+        password: password.current?.value,
+        name: name.current?.value
+      });
 
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
@@ -36,22 +40,19 @@ const Signup: React.FC<SignupProps> = ({ setAuth }) => {
         <input
           type="text"
           placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          ref={username}
           className="w-full p-3 border border-gray-600 bg-gray-700 rounded-lg text-white"
         />
         <input
           type="text"
           placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          ref={name}
           className="w-full p-3 border border-gray-600 bg-gray-700 rounded-lg text-white"
         />
         <input
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          ref={password}
           className="w-full p-3 border border-gray-600 bg-gray-700 rounded-lg text-white"
         />
         <button type="submit" className="w-full p-3 bg-green-500 hover:bg-green-600 text-white rounded-lg">

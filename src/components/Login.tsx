@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -7,19 +7,24 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ setAuth }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  // const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("");
+  const username = useRef<HTMLInputElement>(null);
+  const password = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:5000/login", { username, password });
+      const response = await axios.post("http://127.0.0.1:5000/login", {
+        username: username.current?.value,
+        password: password.current?.value
+      });
 
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         setAuth(true);
-        navigate("/image"); 
+        navigate("/image");
       } else {
         alert("Invalid login credentials");
       }
@@ -35,15 +40,13 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
         <input
           type="text"
           placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          ref={username}
           className="w-full p-3 border border-gray-600 bg-gray-700 rounded-lg text-white"
         />
         <input
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          ref={password}
           className="w-full p-3 border border-gray-600 bg-gray-700 rounded-lg text-white"
         />
         <button type="submit" className="w-full p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg">
